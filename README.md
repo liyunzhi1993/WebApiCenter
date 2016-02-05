@@ -135,5 +135,3 @@ www.正式地址/api?method=Score.QueryScoreByMembercode&amp;api_key=CEE4975F-8E
 以及在mongodb中增加
 
 db.ApiLibrary.insert({apiname:"MobileServices",description:"专为移动端开发的API",docid:""})
-
-项目开源地址：https://github.com/liyunzhi1993/Asp.net-Mvc-Rest-WebApiCenter
