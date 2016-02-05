@@ -1,0 +1,6 @@
+D:\Github\WebApiCenter\WebApiCenter.Model\bin\Release\WebApiCenter.Models.dll
+D:\Github\WebApiCenter\WebApiCenter.Model\bin\Release\WebApiCenter.Models.pdb
+D:\Github\WebApiCenter\WebApiCenter.Model\bin\Release\MongoDB.Bson.dll
+D:\Github\WebApiCenter\WebApiCenter.Model\obj\Release\WebApiCenter.Models.csprojResolveAssemblyReference.cache
+D:\Github\WebApiCenter\WebApiCenter.Model\obj\Release\WebApiCenter.Models.dll
+D:\Github\WebApiCenter\WebApiCenter.Model\obj\Release\WebApiCenter.Models.pdb

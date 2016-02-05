@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "登录-WebApiCenter";
+}
+<body ng-app="index" ng-controller="indexCtrl">
+    <div class="container">
+        <div class="row" style="padding-top: 150px;">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <p class="panel-title">WebApiCenter</p>
+                    </div>
+                    <form ng-submit="submit()">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="username">用户名</label>
+                                <input type="text" class="form-control" id="account" name="account">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">密码</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                            <p class="text-left">
+                                <input type="submit" value="登录" class="btn btn-default" />
+                            </p>
+                        </div>
+                        <div class="panel-footer warning"  ng-show="error" ng-bind="error"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="@Url.Content("~/Scripts/Home/index.js")" type="text/javascript"></script>

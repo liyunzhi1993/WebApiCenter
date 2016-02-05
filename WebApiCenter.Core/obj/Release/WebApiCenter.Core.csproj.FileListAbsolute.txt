@@ -1,0 +1,1 @@
+D:\Github\WebApiCenter\WebApiCenter.Core\obj\Release\WebApiCenter.Core.csprojResolveAssemblyReference.cache

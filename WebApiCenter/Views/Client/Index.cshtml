@@ -1,0 +1,179 @@
+﻿@{
+    ViewBag.Title = "API控制中心-WebApiCenter";
+}
+<body style="padding-top: 10px;" ng-app="index" ng-controller="indexCtrl">
+    <div class="container">
+        <div class="row">
+            <p style="text-align: right;">
+                <a href="/Home/Logout" class="btn btn-link">注销</a>
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            客户端列表            
+                            <button type="button" class="btn btn-success btn-xs" style="float: right;" ng-click="setnew()">
+                                <span class="glyphicon glyphicon-plus">新增客户端</span>
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>客户端名称</th>
+                                <th>client_id(app_id)</th>
+                                <th>client_secret(app_secret)</th>
+                                <th>接入IP</th>
+                                <th>创建时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="client in clientlist" on-finish-render-filters>
+                                <td ng-bind="client.clientname"></td>
+                                <td><span ng-bind="client.clientid"></span></td>
+                                <td><span ng-bind="client.clientsecret"></span></td>
+                                <td><span ng-bind="client.reqip"></span></td>
+                                <td><span ng-bind="client.createtime | date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+                                <td><span ng-bind="client.isenabled? '正常':'暂停'"></span></td>
+                                <td>
+                                    <button type="button" class="btn btn-success btn-xs" ng-bind="client.isenabled? '暂停':'开启'" ng-click="changestatus(client.id)">
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-xs" title="编辑" ng-click="edit(client.id,client.clientname,client.clientid,client.clientsecret,client.reqip)">
+                                        编辑
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" title="删除" ng-click="del(client.id)" style="display:none;">
+                                        删除
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" style="text-decoration: underline" data-parent="#accordion" href="#collapseOne">详情
+                                </a>
+                                <span ng-show="isnew" class="label label-success" style="float: right;">新增</span>
+                                <span ng-show="!isnew" class="label label-warning" style="float: right;">编辑</span>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <form ng-submit="submit()">
+                                    <div class="form-group">
+                                        <label for="clientname">客户端名称</label>
+                                        <input ng-model="clientname" type="text" class="form-control" id="clientname" placeholder="客户端名称" />
+                                    </div>
+                                    <div ng-show="isnew">
+                                        <div class="form-group">
+                                            <label for="clientid">client_id(app_id)</label>
+                                            <input ng-model="clientid" type="text" ng-disabled="true" class="form-control" id="clientid" placeholder="client_id">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="clientsecret">client_secret(app_secret)</label>
+                                            <input ng-model="clientsecret" type="text" ng-disabled="true" class="form-control" id="clientsecret" placeholder="client_secret">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="reqip">接入IP</label>
+                                        <input ng-model="reqip" type="text" class="form-control" id="reqip" placeholder="接入IP">
+                                    </div>
+                                    <p style="text-align: right;">
+                                        <button type="submit" class="btn btn-success btn-xs" ng-disabled="error || incomplete">保存</button>
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default" ng-show="!isnew">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" style="text-decoration: underline" data-parent="#accordion" href="#collapseTwo">API权限
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 50px;">权限</th>
+                                            <th>API ID</th>
+                                            <th>API名称</th>
+                                            <th>描述</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="api in apilist" on-finish-render-filters>
+                                            <td class="text-center">
+                                                <input type="checkbox" name="allcheck" id="{{api.id}}">
+                                            </td>
+                                            <td><span ng-bind="api.id"></span></td>
+                                            <td><span ng-bind="api.apiname"></span></td>
+                                            <td><span ng-bind="api.description"></span></td>
+                                            <td>
+                                                <a class="btn-link" href="" ng-click="select(api.id)">上传文档</a>
+                                                <a class="btn-link" href="{{api.docurl}}" ng-show="api.docurl">下载文档</a>
+                                                <a class="btn-link" href="" ng-click="test(api.id,api.apiname)">测试接口</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p style="text-align: right">
+                                    <button type="button" class="btn btn-success btn-xs" ng-click="insertauthorization()">保存</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default" ng-show="apiname">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" style="text-decoration: underline" data-parent="#accordion" href="#collapseThree">测试客户端：{{clientname}}访问{{apiname}}
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="method">请求方法</label>
+                                        <input ng-model="method" type="text" class="form-control" id="method" placeholder="请求方法"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="params">自定义参数</label>
+                                        <input ng-model="params" type="text" class="form-control" id="params" placeholder="自定义参数"/>
+                                    </div>
+                                <div class="form-group">
+                                        <label for="url">请求地址</label>
+                                        <input ng-model="url" type="text" class="form-control" id="url" placeholder="请求地址">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="response">响应数据</label>
+                                        <textarea class="form-control" rows="3"  ng-model="response" type="text" class="form-control" id="response" placeholder="响应数据"></textarea>
+                                    </div>
+                                    <p style="text-align: right;">
+                                        <button type="button" ng-click="runtest()" class="btn btn-success btn-xs">请求测试！</button>
+                                    </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form id="form" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" id="file" uploader="uploader" style="display: none">
+        </form>
+    </div>
+</body>
+<script src="@Url.Content("~/Scripts/Client/index.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.form.js")" type="text/javascript"></script>
