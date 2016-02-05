@@ -50,23 +50,13 @@ Password 密码
 
 #### 3、项目代码结构
 
-&nbsp;
+![](http://upload-images.jianshu.io/upload_images/1556465-846cb5cd052d36e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-<div class="image-package">![](http://upload-images.jianshu.io/upload_images/1556465-846cb5cd052d36e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-<div class="image-caption">&nbsp;</div>
-
-</div>
 
 #### 4、控制中心页面
 
-&nbsp;
+![](http://upload-images.jianshu.io/upload_images/1556465-59da79f9380ed149.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-<div class="image-package">![](http://upload-images.jianshu.io/upload_images/1556465-59da79f9380ed149.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-<div class="image-caption">&nbsp;</div>
-
-</div>
 
 #### 5、接口API规范
 
@@ -76,23 +66,13 @@ Password 密码
 
 **接口参数：**
 
-&nbsp;
+![](http://upload-images.jianshu.io/upload_images/1556465-13b4d3cce35cd217.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-<div class="image-package">![](http://upload-images.jianshu.io/upload_images/1556465-13b4d3cce35cd217.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-<div class="image-caption">&nbsp;</div>
-
-</div>
 
 返回代码：
 
-在该文件夹下
+![](http://upload-images.jianshu.io/upload_images/1556465-dc2cf758ccc5559c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-<div class="image-package">![](http://upload-images.jianshu.io/upload_images/1556465-dc2cf758ccc5559c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-<div class="image-caption">&nbsp;</div>
-
-</div>
 
 #### 6、接口调用示例
 
@@ -114,7 +94,7 @@ method= Score.QueryScoreByMembercode&amp;membercode=138888888888
 
 method=Score.QueryScoreByMembercode&amp;api_key=CEE4975F-8E59-4FB6-A1DD-D02EDA829342&amp;membercode=138888888888
 
-4、根据上面的字符串,加上[secret](http://www.jianshu.com/writer)key值,用sh1算法加密得到sig的值
+4、根据上面的字符串,加上secretkey值,用sh1算法加密得到sig的值
 
 method=Score.Score.QueryScoreByMembercode&amp;api_key=CEE4975F-8E59-4FB6-A1DD-D02EDA829342&amp;membercode=138888888888
 
@@ -126,7 +106,7 @@ sig=062A3A36C664FEFE0FD1472A7782969DF1AB0CF0
 
 5、现在就可以通过完整的url,获取所需要的数据了：
 
-[正式地址/](http://www.xn--ces6a237bxjn/services.ashx)api?[method=Score.QueryScoreByMembercode&amp;api_key=CEE4975F-8E59-4FB6-A1DD-D02EDA829342&amp;sig=062A3A36C664FEFE0FD1472A7782969DF1AB0CF0&amp;membercode=13901648617&amp;api_id=56b08a110ad8f94c50e6bf05](http://www.jianshu.com/writer)
+www.正式地址/api?method=Score.QueryScoreByMembercode&amp;api_key=CEE4975F-8E59-4FB6-A1DD-D02EDA829342&amp;sig=062A3A36C664FEFE0FD1472A7782969DF1AB0CF0&amp;membercode=13901648617&amp;api_id=56b08a110ad8f94c50e6bf05
 
 6、服务器返回的结果默认是Json,也可以是XML
 
