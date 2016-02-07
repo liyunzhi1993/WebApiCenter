@@ -2,7 +2,7 @@
 
 架构:asp.net mvc restful web api
 
-前端框架:bootstrap
+前端框架:bootstrap、angularjs
 
 数据库:mongodb
 
