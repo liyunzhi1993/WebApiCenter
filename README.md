@@ -1,52 +1,14 @@
-### 1、技术架构
+### 1、概述
+
+WebAPICenter是指对外接口的统一控制中心，包括权限分配，以及未来的日志记录，可控更安全。
+
+### 2、技术架构
 
 架构:asp.net mvc restful web api
 
 前端框架:bootstrap、angularjs
 
 数据库:mongodb
-
-#### 2、数据库设计
-
-表名：ApiLibrary Api库
-
-ID ObjectId 主键
-
-apiname string api名称
-
-description api描述
-
-docurl 接口文档地址
-
-表名：Authorizations 权限授权表
-
-ID ObjectId 主键
-
-Apilibraryids api库id集合 用,分割
-
-Clientsid 客户端ID
-
-表名：Clients 客户端表
-
-ID ObjectId 主键
-
-Clientname 客户端名称
-
-Clientid api_key
-
-Clientsecret api_secret
-
-Reqip 限制访问IP
-
-Createtime 创建时间
-
-Isenabled 状态(正常/暂停)
-
-表名：Users 用户表
-
-Account 账号
-
-Password 密码
 
 #### 3、项目代码结构
 
@@ -66,17 +28,40 @@ Password 密码
 
 **接口参数：**
 
-![](http://upload-images.jianshu.io/upload_images/1556465-13b4d3cce35cd217.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
+必选项	名称	类型	描述
+必选	method	string	方法名称,必须是API文档中的方法名称，否则会返回错误代码 3 (未知方法或方法内部错误)
+必选	api_key 	string 	API key 对应当前请求api的应用程序。
+必选	sig 	string 	请求当前方法的签名. sig需要小写匹配，否则会返回一个签名错误(104)签名由下列算法构造: 
+把所有参数按照参数key字母排序，然后按照key=value的方式把所有参数拼接为字符串，最后拼接密钥SecretKey的值。例如：key1=value1&key2=value2&key3=value3&secretkey，最后用标准SHA1加密。
+必选	api_id	string	即要访问的API 库ID 这个会分配
+可选	format	string 	所需的返回格式JSON（默认）或XML，若需要返回XML类型数据格式则需要该参数
 
 返回代码：
 
-![](http://upload-images.jianshu.io/upload_images/1556465-dc2cf758ccc5559c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
+代码	描述
+0	成功
+1	发生未知错误,请重新提交请求
+2	服务现在不可用
+3	未知方法
+4	已到达最大请求
+30	未知访问类
+100	指定的参数之一丢失或无效
+103	提交的call_id不大于该会话的前call_id
+5	请求来自于该应用程序不允许的远程地址
+6	没有对应的API
+7	没有访问该API的权限
+10	应用程序没有此操作权限
+101	API没有与任何已知的应用程序关联的
+102	Session是不正确提交或已超时,用户直接登录以获得另一个密钥
+104	错误签名
+109	不允许注册
+110	用户名已经存在
+112	不允许的用户名
+113	用户已经在线
 
 #### 6、接口调用示例
 
-本例将以获取积分余额功能为例,讲解如何通过服务调用相应的数据,首先我们会提供给接口调用方,两个key文件,一个APIKey和一个SecretKey,还有一个apiid如本例中的
+首先我们会提供给接口调用方,两个key文件,一个APIKey和一个SecretKey,还有一个apiid如本例中的
 
 APIKEY:CEE4975F-8E59-4FB6-A1DD-D02EDA829342
 
@@ -86,7 +71,7 @@ APIId:56b08a110ad8f94c50e6bf05
 
 1、提供接口方法所需的特定参数（必填）：
 
-在Score.QueryScoreByMembercode这个积分查询接口方法中,membercode入参是必须的,在本例中分别对应138888888888,通过key=value的方式拼接参数字符串为:
+在Score.QueryScoreByMembercode这测试接口方法中,membercode入参是必须的,在本例中分别对应138888888888,通过key=value的方式拼接参数字符串为:
 
 method= Score.QueryScoreByMembercode&amp;membercode=138888888888
 
