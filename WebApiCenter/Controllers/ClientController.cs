@@ -16,9 +16,6 @@ namespace WebApiCenter.Controllers
     [Authorize]
     public class ClientController : Controller
     {
-        private ClientsCore clientsCore = new ClientsCore();
-        private ApiLibraryCore apiLibraryCore = new ApiLibraryCore();
-        private AuthorizationsCore authorizationsCore = new AuthorizationsCore();
         private Comm comm = new Comm();
         //
         // GET: /Client/
@@ -37,7 +34,7 @@ namespace WebApiCenter.Controllers
         /// 描述：获取所有客户端列表
         public string GetClientList()
         {
-            return JsonHelper.SerializeObject(clientsCore.GetClientList());
+            return JsonHelper.SerializeObject(ClientsCore.GetInstance().GetClientList());
         }
 
         /// <summary>
@@ -49,7 +46,7 @@ namespace WebApiCenter.Controllers
         /// 描述：获取所有API列表
         public string GetApiList()
         {
-            return JsonHelper.SerializeObject(apiLibraryCore.GetApiLibraryList());
+            return JsonHelper.SerializeObject(ApiLibraryCore.GetInstance().GetApiLibraryList());
         }
 
         /// <summary>
@@ -62,7 +59,7 @@ namespace WebApiCenter.Controllers
         /// 描述：获取API权限
         public string GetAuthorization(string clientsid)
         {
-            return JsonHelper.SerializeObject(authorizationsCore.GetAuthorization(clientsid));
+            return JsonHelper.SerializeObject(AuthorizationsCore.GetInstance().GetAuthorization(clientsid));
         }
 
         /// <summary>
@@ -81,14 +78,14 @@ namespace WebApiCenter.Controllers
                 {
                     client.isenabled = true;
                     client.createtime = DateTime.Now;
-                    clientsCore.InsertClient(client);
+                    ClientsCore.GetInstance().InsertClient(client);
                 }
                 else
                 {
-                    Clients editClient = clientsCore.GetClient(id);
+                    Clients editClient = ClientsCore.GetInstance().GetClient(id);
                     editClient.clientname = client.clientname;
                     editClient.reqip = client.reqip;
-                    clientsCore.UpdateClient(editClient);
+                    ClientsCore.GetInstance().UpdateClient(editClient);
                 }
                 comm.success = true;
                 comm.message = "保存成功";
@@ -114,21 +111,21 @@ namespace WebApiCenter.Controllers
         {
             try
             {
-                Authorizations authorization = authorizationsCore.GetAuthorization(clientsid);
+                Authorizations authorization = AuthorizationsCore.GetInstance().GetAuthorization(clientsid);
                 if (string.IsNullOrEmpty(apilibraryids))
                 {
-                    authorizationsCore.DeleteAuthorization(authorization.id);
+                    AuthorizationsCore.GetInstance().DeleteAuthorization(authorization.id);
                 }
                 else
                 {
                     if (authorization != null)
                     {
-                        authorizationsCore.DeleteAuthorization(authorization.id);
+                        AuthorizationsCore.GetInstance().DeleteAuthorization(authorization.id);
                     }
                     authorization = new Authorizations();
                     authorization.apilibraryids = apilibraryids;
                     authorization.clientsid = clientsid;
-                    authorizationsCore.InsertAuthorization(authorization);
+                    AuthorizationsCore.GetInstance().InsertAuthorization(authorization);
                 }
                 comm.success = true;
                 comm.message = "保存成功";
@@ -168,9 +165,9 @@ namespace WebApiCenter.Controllers
                         path = "/Data/" + num.ToString() + extension;
                         file.SaveAs(System.Web.HttpContext.Current.Server.MapPath(path));
                     }
-                    ApiLibrary apiLibrary = apiLibraryCore.GetApiLibrary(apiid);
+                    ApiLibrary apiLibrary = ApiLibraryCore.GetInstance().GetApiLibrary(apiid);
                     apiLibrary.docurl = path;
-                    apiLibraryCore.UpdateApiLibrary(apiLibrary);
+                    ApiLibraryCore.GetInstance().UpdateApiLibrary(apiLibrary);
                     comm.success = true;
                     comm.message = "上传成功";
                 }
@@ -195,7 +192,7 @@ namespace WebApiCenter.Controllers
         {
             try
             {
-                clientsCore.Del(id);
+                ClientsCore.GetInstance().Del(id);
                 comm.success = true;
                 comm.message = "删除成功";
             }
@@ -220,9 +217,9 @@ namespace WebApiCenter.Controllers
         {
             try
             {
-                Clients client = clientsCore.GetClient(id);
+                Clients client = ClientsCore.GetInstance().GetClient(id);
                 client.isenabled = !client.isenabled;
-                clientsCore.UpdateClient(client);
+                ClientsCore.GetInstance().UpdateClient(client);
                 comm.success = true;
                 comm.message = "操作成功";
             }

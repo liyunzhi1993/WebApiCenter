@@ -11,6 +11,17 @@ namespace WebApiCenter.Core.Client
 {
     public class AuthorizationsCore
     {
+        private static AuthorizationsCore instance;
+
+        public static AuthorizationsCore GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new AuthorizationsCore();
+            }
+            return instance;
+        }
+
         public void InsertAuthorization(Authorizations authorization)
         {
             MongodbHelper.InsertOne("Authorizations", authorization);

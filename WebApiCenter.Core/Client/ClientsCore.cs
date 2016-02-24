@@ -14,6 +14,17 @@ namespace WebApiCenter.Core.Client
     public class ClientsCore
     {
         private BsonDocument doc = new BsonDocument();
+
+        private static ClientsCore instance;
+
+        public static ClientsCore GetInstance()
+        {
+            if (instance==null)
+            {
+                instance = new ClientsCore();
+            }
+            return instance;
+        }
         public List<Clients> GetClientList()
         {
             return MongodbHelper.GetAll<Clients>("Clients");

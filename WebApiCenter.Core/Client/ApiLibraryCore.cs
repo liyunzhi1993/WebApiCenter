@@ -10,6 +10,16 @@ namespace WebApiCenter.Core.Client
 {
     public class ApiLibraryCore
     {
+        private static ApiLibraryCore instance;
+
+        public static ApiLibraryCore GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new ApiLibraryCore();
+            }
+            return instance;
+        }
         public List<ApiLibrary> GetApiLibraryList()
         {
             return MongodbHelper.GetAll<ApiLibrary>("ApiLibrary");

@@ -187,7 +187,8 @@ namespace WebApiCenter.App_Start
                 action.ApiKey = apiKey;
                 action.Params = parameters;
                 action.Secret = secretKey;
-                action.Format = FormatType.XML;
+                action.Format = FormatType.JSON;
+                context.Response.ContentType = "application/Json";
                 action.Signature = sig;
 
                 if (format.Trim().ToLower() == "xml")
@@ -197,7 +198,6 @@ namespace WebApiCenter.App_Start
                 }
 
                 content = typeInstance.InvokeMember(methodname, BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.IgnoreCase, null, action, new object[] { }).ToString();
-                returnMsg.content = content;
             }
             catch (Exception ex)
             {
@@ -211,13 +211,14 @@ namespace WebApiCenter.App_Start
                 ResponseErrorInfo(action.ErrorCode);
                 return;
             }
-            Response();
+            this.currentContext.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            this.currentContext.Response.Write(content);
+            this.currentContext.ApplicationInstance.CompleteRequest();
         }
 
         private void ResponseErrorInfo(int errorCode)
         {
             returnMsg.code = errorCode;
-            returnMsg.content = "";
             string responseStr = string.Empty;
             if (format == "" || format.ToLower() == "json")
             {
@@ -239,26 +240,6 @@ namespace WebApiCenter.App_Start
             this.currentContext.ApplicationInstance.CompleteRequest();
 
         }
-
-        private void Response()
-        {
-            returnMsg.code = 00;
-            string responseStr = string.Empty;
-            if (format == "" || format.ToLower() == "json")
-            {
-                this.currentContext.Response.ContentType = "text/html";
-                responseStr = JsonConvert.SerializeObject(returnMsg);
-            }
-            else if (format.ToLower() == "xml")
-            {
-                XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(JsonConvert.SerializeObject(returnMsg),"root");
-                responseStr = doc.OuterXml;
-            }
-            this.currentContext.Response.AddHeader("Access-Control-Allow-Origin", "*");
-            this.currentContext.Response.Write(responseStr);
-            this.currentContext.ApplicationInstance.CompleteRequest();
-        }
-
         /// <summary>  
         /// 获取请求Ip  
         /// </summary>  
